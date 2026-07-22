@@ -5,17 +5,13 @@ def apply_custom_css():
         <style>
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
-        /* ۱. اعمال فونت و راست‌چین کردن */
-        html, body, [class*="css"], p, h1, h2, h3, h4, h5, h6, span, label, input, textarea, button {
+        html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, span, button, input {
             font-family: 'Vazirmatn', sans-serif !important;
-        }
-
-        .main, .stApp {
             direction: rtl;
             text-align: right;
         }
 
-        /* ۲. مخفی کردن کامل دکمه باز/بسته کردن Sidebar (ثابت ساختن منو) */
+        /* ۱. مخفی کردن دکمه باز/بسته شدن منو جهت ثابت ماندن منوی سمت راست */
         [data-testid="stSidebarCollapseButton"],
         [data-testid="stSidebarExpandButton"],
         button[aria-label="Close sidebar"],
@@ -23,28 +19,44 @@ def apply_custom_css():
             display: none !important;
         }
 
-        /* ۳. قفل کردن عرض Sidebar و جلوگیری از تغییر سایز */
+        /* ۲. قفل کردن عرض منو و حذف اسکرول افقی ناخواسته */
         [data-testid="stSidebar"] {
             min-width: 280px !important;
             max-width: 280px !important;
         }
 
-        /* ۴. حل مشکل تداخل Placeholder و ورودی‌ها */
+        .main .block-container {
+            overflow-x: hidden !important;
+        }
+
+        /* ۳. اصلاح جهت ورودی‌ها برای جلوگیری از تداخل متن و Placeholder */
         .stTextInput input, .stTextArea textarea {
             direction: rtl !important;
             text-align: right !important;
         }
 
-        /* ۵. چپ‌به-راست نگه‌داشتن باکس‌های کد پرامپت */
-        .stCodeBlock, div[data-testid="stCodeBlock"] {
-            direction: ltr !important;
-            text-align: left !important;
+        /* کارت‌های آماری و فرم‌ها */
+        .stButton>button {
+            width: 100%;
+            background-color: #2563EB;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border: none;
+            transition: all 0.3s ease;
         }
 
-        /* ۶. حذف اسکرول افقی ناخواسته */
-        .main .block-container {
-            overflow-x: hidden !important;
-            padding-top: 2rem;
+        .stButton>button:hover {
+            background-color: #1D4ED8;
+            border-color: #1D4ED8;
+            color: white;
+        }
+
+        /* باکس کدهای پرامپت */
+        .stCodeBlock {
+            direction: ltr !important;
+            text-align: left !important;
         }
         </style>
     """, unsafe_allow_html=True)
