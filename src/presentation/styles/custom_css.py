@@ -5,34 +5,46 @@ def apply_custom_css():
         <style>
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
-        html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, span, button, input {
+        /* ۱. اعمال فونت و راست‌چین کردن */
+        html, body, [class*="css"], p, h1, h2, h3, h4, h5, h6, span, label, input, textarea, button {
             font-family: 'Vazirmatn', sans-serif !important;
+        }
+
+        .main, .stApp {
             direction: rtl;
             text-align: right;
         }
 
-        /* کارت‌های آماری و فرم‌ها */
-        .stButton>button {
-            width: 100%;
-            background-color: #2563EB;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border: none;
-            transition: all 0.3s ease;
+        /* ۲. مخفی کردن کامل دکمه باز/بسته کردن Sidebar (ثابت ساختن منو) */
+        [data-testid="stSidebarCollapseButton"],
+        [data-testid="stSidebarExpandButton"],
+        button[aria-label="Close sidebar"],
+        button[aria-label="Open sidebar"] {
+            display: none !important;
         }
 
-        .stButton>button:hover {
-            background-color: #1D4ED8;
-            border-color: #1D4ED8;
-            color: white;
+        /* ۳. قفل کردن عرض Sidebar و جلوگیری از تغییر سایز */
+        [data-testid="stSidebar"] {
+            min-width: 280px !important;
+            max-width: 280px !important;
         }
 
-        /* باکس کدهای پرامپت */
-        .stCodeBlock {
+        /* ۴. حل مشکل تداخل Placeholder و ورودی‌ها */
+        .stTextInput input, .stTextArea textarea {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        /* ۵. چپ‌به-راست نگه‌داشتن باکس‌های کد پرامپت */
+        .stCodeBlock, div[data-testid="stCodeBlock"] {
             direction: ltr !important;
             text-align: left !important;
+        }
+
+        /* ۶. حذف اسکرول افقی ناخواسته */
+        .main .block-container {
+            overflow-x: hidden !important;
+            padding-top: 2rem;
         }
         </style>
     """, unsafe_allow_html=True)

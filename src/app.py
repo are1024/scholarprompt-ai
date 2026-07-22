@@ -17,8 +17,9 @@ st.set_page_config(
     page_title="ScholarPrompt-AI",
     page_icon="🎓",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded"  # منو همیشه در ابتدا باز است
 )
+
 
 def main():
     apply_custom_css()
