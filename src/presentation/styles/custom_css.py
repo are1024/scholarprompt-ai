@@ -44,8 +44,9 @@ def apply_custom_css():
             padding: 0px !important;
         }
 
-        /* ۴. فقط استایل اختصاصی برای دکمه تولید پرامپت (Primary Button) */
-        button[kind="primary"] {
+        /* ۴. اجبار دکمه Primary به رنگ سبز کم‌رنگ (با اضافه کردن Selector دقیق‌تر) */
+        div.stButton > button[kind="primary"],
+        div.stButton > button[data-testid="baseButton-primary"] {
             width: 100% !important;
             background-color: #DCFCE7 !important; /* سبز کم‌رنگ */
             color: #166534 !important; /* متن سبز تیره */
@@ -57,8 +58,9 @@ def apply_custom_css():
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
         }
 
-        button[kind="primary"]:hover {
-            background-color: #BBF7D0 !important;
+        div.stButton > button[kind="primary"]:hover,
+        div.stButton > button[data-testid="baseButton-primary"]:hover {
+            background-color: #BBF7D0 !important; /* سبز کمی پررنگ‌تر */
             border-color: #4ADE80 !important;
             color: #14532D !important;
             transform: translateY(-1px);
