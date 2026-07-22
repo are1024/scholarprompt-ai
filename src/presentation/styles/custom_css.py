@@ -3,43 +3,34 @@ import streamlit as st
 def apply_custom_css():
     st.markdown("""
         <style>
-        /* ۱. اعمال فونت فقط به عناصر متنی (جلوگیری از تغییر فونت آیکون‌ها) */
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
-        p, h1, h2, h3, h4, h5, h6, span, label, input, textarea, button {
-            font-family: 'Vazirmatn', sans-serif;
-        }
-
-        /* ۲. استثنا کردن آیکون‌های متنی Streamlit جهت جلوگیری از نمایش متن نام آیکون */
-        .material-symbols-rounded, 
-        [data-testid="stIcon"],
-        [class*="st-"] i,
-        [data-testid="stSidebarCollapseButton"] *,
-        [data-testid="stSidebarExpandButton"] * {
-            font-family: 'Material Symbols Rounded', sans-serif !important;
-        }
-
-        /* ۳. راست‌چین کردن کل بدنه و حذف اسکرول افقی ناخواسته */
-        .main, .stApp {
+        html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, span, button, input {
+            font-family: 'Vazirmatn', sans-serif !important;
             direction: rtl;
             text-align: right;
         }
 
-        .main .block-container {
-            max-width: 95%;
-            padding-top: 2rem;
-            overflow-x: hidden;
+        /* کارت‌های آماری و فرم‌ها */
+        .stButton>button {
+            width: 100%;
+            background-color: #2563EB;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border: none;
+            transition: all 0.3s ease;
         }
 
-        /* ۴. حل مشکل تداخل Placeholder با متن تایپ‌شده در Inputها */
-        .stTextInput > div > div > input,
-        .stTextArea > div > div > textarea {
-            direction: rtl !important;
-            text-align: right !important;
+        .stButton>button:hover {
+            background-color: #1D4ED8;
+            border-color: #1D4ED8;
+            color: white;
         }
 
-        /* ۵. نگه داشتن باکس‌های کد به‌صورت چپ‌به-راست (LTR) برای خوانایی پرامپت‌ها */
-        .stCodeBlock, div[data-testid="stCodeBlock"] {
+        /* باکس کدهای پرامپت */
+        .stCodeBlock {
             direction: ltr !important;
             text-align: left !important;
         }
