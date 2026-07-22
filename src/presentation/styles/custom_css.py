@@ -35,6 +35,13 @@ def apply_custom_css():
             text-align: right !important;
         }
 
+        /* ۴. حذف متن‌های راهنمای پیش‌فرض و متن زیر ورودی‌ها (مثل Press Enter to apply) */
+        [data-testid="stInputInstruction"], 
+        .stTextInput small, 
+        .stTextArea small {
+            display: none !important;
+        }
+
         /* کارت‌های آماری و فرم‌ها */
         .stButton>button {
             width: 100%;
