@@ -35,11 +35,17 @@ def apply_custom_css():
             text-align: right !important;
         }
 
-        /* ۴. حذف متن‌های راهنمای پیش‌فرض و متن زیر ورودی‌ها (مثل Press Enter to apply) */
-        [data-testid="stInputInstruction"], 
-        .stTextInput small, 
-        .stTextArea small {
+        /* ۴. حذف کامل و قطعی تمامی متن‌های راهنمای زیر ورودی‌ها */
+        [data-testid="stInputInstruction"],
+        [data-testid="InputInstructions"],
+        .stTextInput small,
+        .stTextArea small,
+        div[data-baseweb="typo-caption"] {
             display: none !important;
+            visibility: hidden !important;
+            height: 0px !important;
+            margin: 0px !important;
+            padding: 0px !important;
         }
 
         /* کارت‌های آماری و فرم‌ها */
