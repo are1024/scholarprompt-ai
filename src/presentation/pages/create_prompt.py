@@ -22,7 +22,7 @@ def render_create_prompt_page():
 
         additional_notes = st.text_area("توضیحات یا محدودیت‌های خاص (اختیاری)", placeholder="مثلاً: تاکید روی متدولوژی x یا منابع سال ۲۰۲۰ به بعد...")
 
-        submitted = st.form_submit_button("🔥 تولید پرامپت هوشمند")
+        submitted = st.form_submit_button("🔥 تولید پرامپت هوشمند", type="primary")
 
     if submitted:
         if not title or not academic_field:

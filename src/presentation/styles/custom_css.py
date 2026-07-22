@@ -5,13 +5,14 @@ def apply_custom_css():
         <style>
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
+        /* ۱. تنظیمات عمومی فونت و جهت */
         html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, span, button, input {
             font-family: 'Vazirmatn', sans-serif !important;
             direction: rtl;
             text-align: right;
         }
 
-        /* ۱. مخفی کردن دکمه باز/بسته شدن منو جهت ثابت ماندن منوی سمت راست */
+        /* ۲. قفل کردن عرض Sidebar */
         [data-testid="stSidebarCollapseButton"],
         [data-testid="stSidebarExpandButton"],
         button[aria-label="Close sidebar"],
@@ -19,23 +20,18 @@ def apply_custom_css():
             display: none !important;
         }
 
-        /* ۲. قفل کردن عرض منو و حذف اسکرول افقی ناخواسته */
         [data-testid="stSidebar"] {
-            min-width: 280px !important;
-            max-width: 280px !important;
+            min-width: 290px !important;
+            max-width: 290px !important;
         }
 
         .main .block-container {
             overflow-x: hidden !important;
+            padding-top: 2rem;
+            max-width: 1100px;
         }
 
-        /* ۳. اصلاح جهت ورودی‌ها برای جلوگیری از تداخل متن و Placeholder */
-        .stTextInput input, .stTextArea textarea {
-            direction: rtl !important;
-            text-align: right !important;
-        }
-
-        /* ۴. حذف کامل و قطعی تمامی متن‌های راهنمای زیر ورودی‌ها */
+        /* ۳. حذف متون راهنمای زیر ورودی‌ها */
         [data-testid="stInputInstruction"],
         [data-testid="InputInstructions"],
         .stTextInput small,
@@ -48,28 +44,62 @@ def apply_custom_css():
             padding: 0px !important;
         }
 
-        /* کارت‌های آماری و فرم‌ها */
-        .stButton>button {
-            width: 100%;
-            background-color: #2563EB;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border: none;
-            transition: all 0.3s ease;
+        /* ۴. فقط استایل اختصاصی برای دکمه تولید پرامپت (Primary Button) */
+        button[kind="primary"] {
+            width: 100% !important;
+            background-color: #DCFCE7 !important; /* سبز کم‌رنگ */
+            color: #166534 !important; /* متن سبز تیره */
+            border: 1px solid #86EFAC !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            padding: 0.6rem 1rem !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
         }
 
-        .stButton>button:hover {
-            background-color: #1D4ED8;
-            border-color: #1D4ED8;
-            color: white;
+        button[kind="primary"]:hover {
+            background-color: #BBF7D0 !important;
+            border-color: #4ADE80 !important;
+            color: #14532D !important;
+            transform: translateY(-1px);
         }
 
-        /* باکس کدهای پرامپت */
-        .stCodeBlock {
-            direction: ltr !important;
-            text-align: left !important;
+        /* ۵. استایل‌های حالت Light Mode برای کنتراست مناسب */
+        @media (prefers-color-scheme: light) {
+            .stApp {
+                background-color: #F1F5F9 !important;
+                color: #0F172A !important;
+            }
+
+            [data-testid="stSidebar"] {
+                background-color: #FFFFFF !important;
+                border-left: 1px solid #E2E8F0 !important;
+            }
+
+            .stTextInput input, .stTextArea textarea, .stSelectbox > div > div {
+                background-color: #FFFFFF !important;
+                color: #0F172A !important;
+                border: 1px solid #CBD5E1 !important;
+                border-radius: 8px !important;
+            }
+
+            [data-testid="stMetric"] {
+                background-color: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 10px !important;
+            }
+
+            .streamlit-expanderHeader {
+                background-color: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 8px !important;
+            }
+
+            .stCodeBlock {
+                background-color: #1E293B !important;
+                border: 1px solid #334155 !important;
+                border-radius: 8px !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
