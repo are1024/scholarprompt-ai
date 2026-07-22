@@ -5,20 +5,14 @@ def apply_custom_css():
         <style>
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
-        /* ۱. فونت و جهت کلی */
+        /* ۱. تنظیمات عمومی فونت و جهت */
         html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, span, button, input {
             font-family: 'Vazirmatn', sans-serif !important;
             direction: rtl;
             text-align: right;
         }
 
-        /* ۲. اصلاح رنگ پس‌زمینه اصلی در حالت Light Mode */
-        .stApp {
-            background-color: #F8FAFC !important; /* پس‌زمینه اصلی خاکستری ملایم */
-            color: #0F172A !important;
-        }
-
-        /* ۳. قفل کردن عرض Sidebar و استایل متمایز آن */
+        /* ۲. قفل کردن عرض Sidebar و مخفی‌سازی دکمه باز/بستن */
         [data-testid="stSidebarCollapseButton"],
         [data-testid="stSidebarExpandButton"],
         button[aria-label="Close sidebar"],
@@ -29,9 +23,6 @@ def apply_custom_css():
         [data-testid="stSidebar"] {
             min-width: 290px !important;
             max-width: 290px !important;
-            background-color: #FFFFFF !important;
-            border-left: 1px solid #E2E8F0 !important;
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.02);
         }
 
         .main .block-container {
@@ -40,23 +31,7 @@ def apply_custom_css():
             max-width: 1100px;
         }
 
-        /* ۴. استایل باکس‌های ورودی (Inputs & Textareas) */
-        .stTextInput input, .stTextArea textarea, .stSelectbox > div > div {
-            background-color: #FFFFFF !important;
-            color: #0F172A !important;
-            direction: rtl !important;
-            text-align: right !important;
-            border-radius: 8px !important;
-            border: 1px solid #CBD5E1 !important;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-        }
-
-        .stTextInput input:focus, .stTextArea textarea:focus {
-            border-color: #2563EB !important;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
-        }
-
-        /* ۵. حذف متون راهنمای زیر ورودی‌ها */
+        /* ۳. حذف متون راهنمای اضافه زیر ورودی‌ها */
         [data-testid="stInputInstruction"],
         [data-testid="InputInstructions"],
         .stTextInput small,
@@ -69,63 +44,77 @@ def apply_custom_css():
             padding: 0px !important;
         }
 
-        /* ۶. دکمه‌های اصلی (Primary Buttons) */
+        /* ۴. دکمه اصلی (تولید پرامپت) - سبز کم‌رنگ مدرن */
         .stButton>button {
             width: 100%;
-            background-color: #2563EB !important;
-            color: #FFFFFF !important;
+            background-color: #DCFCE7 !important; /* سبز بسیار ملایم و شیک */
+            color: #166534 !important; /* سبز تیره برای کنتراست متن */
+            border: 1px solid #86EFAC !important;
             border-radius: 8px !important;
-            font-weight: 600 !important;
-            padding: 0.6rem 1rem !important;
-            border: none !important;
+            font-weight: 700 !important;
+            padding: 0.6.rem 1rem !important;
             transition: all 0.2s ease-in-out !important;
-            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2) !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
         }
 
         .stButton>button:hover {
-            background-color: #1D4ED8 !important;
-            box-shadow: 0 4px 8px rgba(29, 78, 216, 0.3) !important;
+            background-color: #BBF7D0 !important; /* کمی پررنگ‌تر هنگام هور */
+            border-color: #4ADE80 !important;
+            color: #14532D !important;
             transform: translateY(-1px);
         }
 
-        /* ۷. باکس خروجی کدهای پرامپت (Prompt Output Box) */
-        .stCodeBlock {
-            direction: ltr !important;
-            text-align: left !important;
-            background-color: #0F172A !important; /* پس‌زمینه تیره برای کنتراست بالای پرامپت */
-            color: #F8FAFC !important;
-            border-radius: 10px !important;
-            border: 1px solid #334155 !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-        }
+        /* ========================================================= */
+        /* ۵. استایل‌های اختصاصی برای حالت LIGHT MODE (تم روشن) */
+        /* ========================================================= */
+        @media (prefers-color-scheme: light) {
+            /* پس‌زمینه اصلی صفحه: طوسی-آبی بسیار ملایم */
+            .stApp {
+                background-color: #F1F5F9 !important;
+                color: #0F172A !important;
+            }
 
-        /* ۸. استایل Expander و کارت‌ها */
-        .streamlit-expanderHeader {
-            background-color: #FFFFFF !important;
-            border-radius: 8px !important;
-            border: 1px solid #E2E8F0 !important;
-            color: #1E293B !important;
-            font-weight: 600 !important;
-        }
+            /* منوی سمت راست (Sidebar) */
+            [data-testid="stSidebar"] {
+                background-color: #FFFFFF !important;
+                border-left: 1px solid #E2E8F0 !important;
+            }
 
-        /* ۹. کارت‌های آماری (Metrics) */
-        [data-testid="stMetric"] {
-            background-color: #FFFFFF !important;
-            padding: 1rem !important;
-            border-radius: 10px !important;
-            border: 1px solid #E2E8F0 !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        }
+            /* ورودی‌های متنی و منوهای کشویی */
+            .stTextInput input, .stTextArea textarea, .stSelectbox > div > div {
+                background-color: #FFFFFF !important;
+                color: #0F172A !important;
+                border: 1px solid #CBD5E1 !important;
+                border-radius: 8px !important;
+            }
 
-        [data-testid="stMetricValue"] {
-            font-size: 1.8rem !important;
-            color: #2563EB !important;
-            font-weight: bold !important;
-        }
+            .stTextInput input:focus, .stTextArea textarea:focus {
+                border-color: #22C55E !important; /* فوکوس سبز ملایم */
+                box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2) !important;
+            }
 
-        [data-testid="stMetricLabel"] {
-            font-size: 0.9rem !important;
-            color: #64748B !important;
+            /* کارت‌های آماری */
+            [data-testid="stMetric"] {
+                background-color: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 10px !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+            }
+
+            /* آکاردئون‌ها (Expander) */
+            .streamlit-expanderHeader {
+                background-color: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
+                border-radius: 8px !important;
+                color: #1E293B !important;
+            }
+
+            /* باکس کد نمایش پرامپت (تیره برای خوانایی بهتر) */
+            .stCodeBlock {
+                background-color: #1E293B !important;
+                border: 1px solid #334155 !important;
+                border-radius: 8px !important;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
