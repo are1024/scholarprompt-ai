@@ -4,7 +4,7 @@ from src.application.services.prompt_service import PromptEngineService
 from src.infrastructure.repositories.prompt_repository_impl import SupabasePromptRepository
 
 def render_create_prompt_page():
-    st.header("✨ ساخت پرامپت جدید آکادمیک")
+    st.header("✨ ساخت پرامپت جدید")
     st.write("اطلاعات پژوهش خود را تکمیل کنید تا پرامپت استاندارد تولید شود.")
 
     with st.form("prompt_form"):
