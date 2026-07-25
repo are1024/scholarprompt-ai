@@ -10,12 +10,15 @@ class SupabasePromptRepository(IPromptRepository):
         self.table_name = "prompts"
 
     def save(self, prompt: AcademicPrompt) -> AcademicPrompt:
+        # نگاشت فیلدهای انتیتی به ستون‌های واقعی جدول شما در دیتابیس
         data = {
-            "user_id": prompt.user_id,
-            "title": prompt.title,
-            "prompt_content": prompt.generated_prompt,
-            "output_type": prompt.output_type,
-            "language": prompt.language
+            "user_id": str(prompt.user_id),
+            "topic": getattr(prompt, "topic", getattr(prompt, "title", "بدون عنوان")),
+            "field_of_study": getattr(prompt, "field_of_study", getattr(prompt, "academic_field", "نامشخص")),
+            "academic_level": getattr(prompt, "academic_level", getattr(prompt, "degree", "نامشخص")),
+            "document_type": getattr(prompt, "document_type", getattr(prompt, "output_type", "نامشخص")),
+            "language": getattr(prompt, "language", "fa"),
+            "generated_prompt": prompt.generated_prompt
         }
         
         response = self.client.table(self.table_name).insert(data).execute()
@@ -31,7 +34,7 @@ class SupabasePromptRepository(IPromptRepository):
     def get_by_user_id(self, user_id: str) -> List[AcademicPrompt]:
         response = self.client.table(self.table_name)\
             .select("*")\
-            .eq("user_id", user_id)\
+            .eq("user_id", str(user_id))\
             .order("created_at", desc=True)\
             .execute()
             
@@ -41,11 +44,12 @@ class SupabasePromptRepository(IPromptRepository):
                 AcademicPrompt(
                     id=item.get("id"),
                     user_id=item.get("user_id"),
-                    title=item.get("title"),
-                    academic_field="نامشخص", # از محتوا خوانده می‌شود یا ثابت
-                    degree="نامشخص",
-                    output_type=item.get("output_type"),
-                    generated_prompt=item.get("prompt_content"),
+                    # خواندن از ستون‌های دیتابیس شما و پر کردن انتیتی
+                    title=item.get("topic"), 
+                    academic_field=item.get("field_of_study"),
+                    degree=item.get("academic_level"),
+                    output_type=item.get("document_type"),
+                    generated_prompt=item.get("generated_prompt"),
                     language=item.get("language", "fa"),
                     created_at=item.get("created_at")
                 )
@@ -56,7 +60,7 @@ class SupabasePromptRepository(IPromptRepository):
         response = self.client.table(self.table_name)\
             .delete()\
             .eq("id", prompt_id)\
-            .eq("user_id", user_id)\
+            .eq("user_id", str(user_id))\
             .execute()
             
         return len(response.data) > 0

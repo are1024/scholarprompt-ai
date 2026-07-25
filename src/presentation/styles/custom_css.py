@@ -71,5 +71,16 @@ def apply_custom_css():
             direction: ltr !important;
             text-align: left !important;
         }
+
+        /* ۵. حذف و مخفی کردن متن‌های سیستمی آیکون‌های اکسپندر (مثل keyboard_arrow) */
+        [data-testid="stExpander"] span span {
+            font-size: 0 !important;
+            color: transparent !important;
+        }
+        
+        /* یا در صورت نیاز به حذف کلی آن بخش از آیکون */
+        [data-testid="stExpander"] svg {
+            /* تنظیمات آیکون در صورت نیاز */
+        }
         </style>
     """, unsafe_allow_html=True)

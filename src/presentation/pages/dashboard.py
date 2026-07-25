@@ -1,30 +1,79 @@
 import streamlit as st
 from src.infrastructure.repositories.prompt_repository_impl import SupabasePromptRepository
+from src.infrastructure.database.supabase_client import SupabaseManager
 
 def render_dashboard_page():
-    st.header("📊 داشبورد آماری پژوهشگر")
+    st.header("⚙️ تنظیمات حساب کاربری")
     
-    dummy_user_id = st.session_state.get("user_id", "00000000-0000-0000-0000-000000000000")
+    # بررسی وضعیت لاگین واقعی کاربر از session_state
+    user = st.session_state.get("user")
+    
+    if not user:
+        st.warning("⚠️ لطفاً ابتدا برای دسترسی به تنظیمات، از طریق منوی کناری وارد حساب کاربری خود شوید.")
+        return
 
-    try:
-        repo = SupabasePromptRepository()
-        prompts = repo.get_by_user_id(dummy_user_id)
-        
-        col1, col2, col3 = st.columns(3)
-        col1.metric("تعداد کل پرامپت‌ها", len(prompts))
-        
-        proposals_count = sum(1 for p in prompts if p.output_type == "پروپوزال")
-        col2.metric("پروپوزال‌های تولید شده", proposals_count)
-        
-        theses_count = sum(1 for p in prompts if p.output_type == "پایان‌نامه")
-        col3.metric("بخش‌های پایان‌نامه", theses_count)
+    user_id = getattr(user, "id", None)
+    if not user_id:
+        st.error("خطا در شناسایی حساب کاربری. لطفاً دوباره وارد شوید.")
+        return
 
-        st.divider()
-        st.subheader("💡 راهنمای استفاده بهینه")
-        st.markdown("""
-        - **پروپوزال:** برای ساخت بیان مسئله و اهمیت تحقیق استفاده کنید.
-        - **پایان‌نامه:** برای تدوین فصل‌بندی و چارچوب نظری مناسب است.
-        - **مقاله:** برای نوشتن چکیده و ساختار مقاله ISI توصیه می‌شود.
-        """)
-    except Exception as e:
-        st.error(f"خطا در دریافت آمار: {str(e)}")
+    supabase = SupabaseManager.get_client()
+
+    # فرم تغییر اطلاعات حساب کاربری
+    with st.form("update_account_form"):
+        st.write(f"ایمیل فعلی: **{getattr(user, 'email', 'نامشخص')}**")
+        
+        new_email = st.text_input("ایمیل جدید (در صورت تمایل به تغییر)")
+        new_password = st.text_input("رمز عبور جدید", type="password")
+        confirm_password = st.text_input("تکرار رمز عبور جدید", type="password")
+        
+        submit_button = st.form_submit_button("بروزرسانی اطلاعات")
+        
+        if submit_button:
+            update_data = {}
+            
+            if new_email:
+                update_data["email"] = new_email
+                
+            if new_password or confirm_password:
+                if new_password != confirm_password:
+                    st.error("❌ رمز عبور جدید و تکرار آن با یکدیگر مطابقت ندارند.")
+                elif len(new_password) < 6:
+                    st.warning("⚠️ رمز عبور باید حداقل ۶ کاراکتر باشد.")
+                else:
+                    update_data["password"] = new_password
+
+            if update_data:
+                if "password" not in update_data or (new_password == confirm_password and len(new_password) >= 6):
+                    try:
+                        response = supabase.auth.update_user(update_data)
+                        st.success("✅ اطلاعات حساب کاربری با موفقیت به‌روزرسانی شد.")
+                        if new_email:
+                            st.info("لطفاً ایمیل جدید خود را برای تایید بررسی کنید.")
+                    except Exception as update_err:
+                        st.error(f"خطا در به‌روزرسانی: {str(update_err)}")
+            elif not new_email and not new_password:
+                st.warning("لطفاً حداقل یکی از فیلدهای ایمیل یا رمز عبور را برای تغییر پر کنید.")
+
+    st.divider()
+
+    # بخش حذف حساب کاربری
+    st.subheader("⚠️ حذف حساب کاربری")
+    st.error("با حذف حساب کاربری، تمام اطلاعات و پرامپت‌های شما برای همیشه از دیتابیس پاک خواهند شد و این عمل غیرقابل بازگشت است.")
+          
+    confirm_delete = st.checkbox("‌ متوجه این اتفاق هستم و میخواهم حساب کاربری‌ام را حذف کنم.")
+
+    
+    if st.button("🗑️ حذف دائمی حساب کاربری", type="primary", disabled=not confirm_delete):
+        try:
+            # صدا زدن تابع امن دیتابیس برای حذف کاربر
+            supabase.rpc('delete_user').execute()
+            
+            # خروج از سیستم و پاکسازی سشن
+            supabase.auth.sign_out()
+            st.session_state.clear()
+            
+            st.success("حساب کاربری و تمام پرامپت‌های شما با موفقیت حذف شدند.")
+            st.rerun()
+        except Exception as e:
+            st.error(f"خطا در حذف حساب کاربری: {str(e)}")

@@ -1,3 +1,4 @@
+
 import sys
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from src.presentation.components.sidebar import render_sidebar
 from src.presentation.pages.create_prompt import render_create_prompt_page
 from src.presentation.pages.history import render_history_page
 from src.presentation.pages.dashboard import render_dashboard_page
+from src.infrastructure.database.supabase_client import SupabaseManager  # ایمپورت مدیریت سواس بیس
 
 st.set_page_config(
     page_title="ScholarPrompt-AI",
@@ -23,6 +25,18 @@ st.set_page_config(
 
 def main():
     apply_custom_css()
+
+    # بررسی و حفظ وضعیت لاگین کاربر هنگام رفرش صفحه
+    if "user" not in st.session_state:
+        try:
+            supabase = SupabaseManager.get_client()
+            # تلاش برای گرفتن نشست فعال از طریق کوکی‌ها/حافظه سواس‌بییس
+            session = supabase.auth.get_session()
+            if session and session.user:
+                st.session_state.user = session.user
+        except Exception:
+            pass  # اگر خطایی بود یعنی کاربر مهمان است و لاگین نکرده
+
     selected_page = render_sidebar()
 
     if selected_page == "🚀 ساخت پرامپت جدید":
