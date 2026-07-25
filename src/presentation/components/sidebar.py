@@ -73,7 +73,4 @@ def render_sidebar():
             if st.button("🔐 ورود / ثبت‌نام", use_container_width=True):
                 auth_modal()
         
-        st.divider()
-        st.info("💡 **راهنما:** اطلاعات پژوهش خود را وارد کنید تا پرامپت ساختاریافته تولید شود.")
-        
         return selected_page

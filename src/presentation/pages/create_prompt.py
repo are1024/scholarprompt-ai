@@ -6,8 +6,7 @@ from src.infrastructure.repositories.prompt_repository_impl import SupabasePromp
 
 def render_create_prompt_page():
     st.header("✨ ساخت پرامپت جدید")
-    st.write("اطلاعات پژوهش خود را تکمیل کنید تا پرامپت استاندارد تولید شود.")
-
+    st.info("💡 **راهنما:** اطلاعات داخل فرم را تکمیل کنید و سپس روی دکمه تولید پرامپت هوشمند کلیک کنید تا پرامپت استاندارد تولید شود.")
     with st.form("prompt_form"):
         col1, col2 = st.columns(2)
 
