@@ -1,3 +1,4 @@
+
 import streamlit as st
 import streamlit.components.v1 as components
 from src.application.dto.prompt_dto import PromptCreateDTO
@@ -65,41 +66,6 @@ def render_create_prompt_page():
         
         prompt_text = st.session_state.last_generated_prompt
         st.code(prompt_text, language="markdown")
-
-        # ایمن‌سازی متن برای قرار گیری در کد جاوا اسکریپت
-        text_to_copy = prompt_text.replace("\\", "\\\\").replace("`", "\\`").replace('"', '\\"').replace("\n", "\\n")
-
-        # دکمه کپی اختصاصی با قابلیت کپی واقعی و نمایش Alert
-        html_code = f"""
-        <div style="display: flex; justify-content: center; margin-bottom: 10px;">
-            <button onclick="copyToClipboard()" style="
-                background-color: #2563eb;
-                color: white;
-                border: none;
-                padding: 12px 20px;
-                font-size: 16px;
-                font-family: inherit;
-                border-radius: 8px;
-                cursor: pointer;
-                width: 100%;
-                font-weight: bold;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                transition: background 0.3s;
-            ">📋 کپی کردن پرامپت</button>
-        </div>
-        <script>
-        function copyToClipboard() {{
-            navigator.clipboard.writeText(`{text_to_copy}`).then(function() {{
-                alert("پرامپت کپی شد!");
-            }}, function(err) {{
-                alert("خطا در کپی کردن متن!");
-            }});
-        }}
-        </script>
-        """
-        
-        # نمایش دکمه کپی
-        components.html(html_code, height=60)
 
         # دکمه ذخیره دستی در تاریخچه با چک کردن تکراری نبودن
         if st.button("ذخیره پرامپت در تاریخچه 💾", use_container_width=True):

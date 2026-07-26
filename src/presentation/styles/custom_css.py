@@ -85,5 +85,20 @@ def apply_custom_css():
             font-size: 0 !important;
             color: transparent !important;
         }
+
+        /* ۶. انتقال کامل هدر و منوی اصلی (سه نقطه) استریم‌لیت به سمت چپ صفحه */
+        header[data-testid="stHeader"] {
+            direction: ltr !important;
+            right: auto !important;
+            left: 0 !important;
+            width: 100% !important;
+            background-color: transparent !important;
+        }
+        
+        #MainMenu {
+            position: absolute !important;
+            left: 20px !important;
+            right: auto !important;
+        }
         </style>
     """, unsafe_allow_html=True)
