@@ -2,6 +2,9 @@ import streamlit as st
 
 def apply_custom_css():
     st.markdown("""
+        <!-- اجبار مرورگرهای موبایل به نمایش صفحه در حالت دسکتاپ -->
+        <meta name="viewport" content="width=1024">
+        
         <style>
         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
@@ -9,6 +12,11 @@ def apply_custom_css():
             font-family: 'Vazirmatn', sans-serif !important;
             direction: rtl;
             text-align: right;
+        }
+
+        /* قفل کردن عرض کلی صفحه برای جلوگیری از حالت ریسپانسیو و موبایل‌وار */
+        .stApp {
+            min-width: 1024px !important;
         }
 
         /* ۱. مخفی کردن دکمه باز/بسته شدن منو جهت ثابت ماندن منوی سمت راست */
@@ -76,11 +84,6 @@ def apply_custom_css():
         [data-testid="stExpander"] span span {
             font-size: 0 !important;
             color: transparent !important;
-        }
-        
-        /* یا در صورت نیاز به حذف کلی آن بخش از آیکون */
-        [data-testid="stExpander"] svg {
-            /* تنظیمات آیکون در صورت نیاز */
         }
         </style>
     """, unsafe_allow_html=True)
