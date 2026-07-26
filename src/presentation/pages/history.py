@@ -2,9 +2,24 @@ import streamlit as st
 from src.infrastructure.repositories.prompt_repository_impl import SupabasePromptRepository
 from src.application.services.history_service import HistoryService
 
+# تعریف پنجره تأیید حذف (Modal Dialog)
+@st.dialog("⚠️ تأیید حذف پرامپت")
+def delete_confirmation_dialog(prompt_id, user_id, history_service):
+    st.write("آیا از حذف این پرامپت مطمئن هستید؟ این عملیات قابل بازگشت نیست.")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("بله، حذف شود", type="primary", use_container_width=True):
+            if history_service.delete_prompt(prompt_id, user_id):
+                st.success("پرامپت با موفقیت حذف شد.")
+                st.rerun()
+    with col2:
+        if st.button("خیر", use_container_width=True):
+            st.rerun()
+
 def render_history_page():
     st.header("📚 تاریخچه پرامپت‌های ساخت‌شده")
-    st.write("در این بخش می‌توانید پرامپت‌های قبلی خود را مشاهده، کپی یا مدیریت کنید.")
+    st.write("در این بخش می‌توانید پرامپت‌های قبلی خود را مشاهده و مدیریت کنید.")
 
     # بررسی وضعیت لاگین واقعی کاربر از session_state
     user = st.session_state.get("user")
@@ -28,8 +43,22 @@ def render_history_page():
             st.info("هنوز هیچ پرامپتی ثبت نکرده‌اید. از صفحه ساخت پرامپت یک پرامپت جدید بسازید!")
             return
 
+        # استایل برای قرمز کردن دکمه حذف (Primary)
+        st.markdown("""
+            <style>
+            div.stButton > button[kind="primary"] {
+                background-color: #dc2626 !important;
+                border-color: #dc2626 !important;
+                color: white !important;
+            }
+            div.stButton > button[kind="primary"]:hover {
+                background-color: #b91c1c !important;
+                border-color: #b91c1c !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         for idx, prompt in enumerate(prompts):
-            # نمایش عنوان (topic) و نوع سند (output_type)
             title = getattr(prompt, "title", "بدون عنوان")
             output_type = getattr(prompt, "output_type", "نامشخص")
             
@@ -40,12 +69,9 @@ def render_history_page():
                 st.caption(f"📅 تاریخ ثبت: {date_str} | زبان: {prompt.language}")
                 st.code(prompt.generated_prompt, language="markdown")
                 
-                col1, col2 = st.columns([1, 5])
-                with col1:
-                    if st.button("🗑️ حذف", key=f"del_{prompt.id}"):
-                        if history_service.delete_prompt(prompt.id, user_id):
-                            st.success("پرامپت با موفقیت حذف شد.")
-                            st.rerun()
+                # دکمه حذف که با کلیک روی آن پنجره تأیید باز می‌شود
+                if st.button("🗑️ حذف پرامپت", key=f"del_{prompt.id}", type="primary", use_container_width=True):
+                    delete_confirmation_dialog(prompt.id, user_id, history_service)
 
     except Exception as e:
         st.error(f"خطا در دریافت تاریخچه از دیتابیس: {str(e)}")

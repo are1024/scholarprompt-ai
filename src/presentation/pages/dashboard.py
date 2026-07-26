@@ -2,6 +2,30 @@ import streamlit as st
 from src.infrastructure.repositories.prompt_repository_impl import SupabasePromptRepository
 from src.infrastructure.database.supabase_client import SupabaseManager
 
+# تعریف پنجره تأیید حذف حساب کاربری (Modal Dialog)
+@st.dialog("⚠️ تأیید حذف دائمی حساب کاربری")
+def delete_account_dialog(supabase):
+    st.write("آیا از حذف حساب کاربری خود مطمئن هستید؟ این عمل غیرقابل بازگشت است.")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("بله، حذف شود", type="primary", use_container_width=True):
+            try:
+                # صدا زدن تابع امن دیتابیس برای حذف کاربر
+                supabase.rpc('delete_user').execute()
+                
+                # خروج از سیستم و پاکسازی سشن
+                supabase.auth.sign_out()
+                st.session_state.clear()
+                
+                st.success("حساب کاربری و تمام پرامپت‌های شما با موفقیت حذف شدند.")
+                st.rerun()
+            except Exception as e:
+                st.error(f"خطا در حذف حساب کاربری: {str(e)}")
+    with col2:
+        if st.button("خیر", use_container_width=True):
+            st.rerun()
+
 def render_dashboard_page():
     st.header("⚙️ تنظیمات حساب کاربری")
     
@@ -18,6 +42,28 @@ def render_dashboard_page():
         return
 
     supabase = SupabaseManager.get_client()
+
+    # استایل CSS برای قرمز کردن دکمه‌های Primary و مدیریت حالت غیرفعال (کم‌رنگ)
+    st.markdown("""
+        <style>
+        div.stButton > button[kind="primary"] {
+            background-color: #dc2626 !important;
+            border-color: #dc2626 !important;
+            color: white !important;
+        }
+        div.stButton > button[kind="primary"]:hover {
+            background-color: #b91c1c !important;
+            border-color: #b91c1c !important;
+        }
+        /* کم‌رنگ کردن دکمه پرایمری زمانی که disabled است */
+        div.stButton > button[kind="primary"]:disabled {
+            background-color: #dc2626 !important;
+            border-color: #dc2626 !important;
+            opacity: 0.4 !important;
+            color: white !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     # فرم تغییر اطلاعات حساب کاربری
     with st.form("update_account_form"):
@@ -64,16 +110,5 @@ def render_dashboard_page():
     confirm_delete = st.checkbox("‌ متوجه این اتفاق هستم و میخواهم حساب کاربری‌ام را حذف کنم.")
 
     
-    if st.button("🗑️ حذف دائمی حساب کاربری", type="primary", disabled=not confirm_delete):
-        try:
-            # صدا زدن تابع امن دیتابیس برای حذف کاربر
-            supabase.rpc('delete_user').execute()
-            
-            # خروج از سیستم و پاکسازی سشن
-            supabase.auth.sign_out()
-            st.session_state.clear()
-            
-            st.success("حساب کاربری و تمام پرامپت‌های شما با موفقیت حذف شدند.")
-            st.rerun()
-        except Exception as e:
-            st.error(f"خطا در حذف حساب کاربری: {str(e)}")
+    if st.button("🗑️ حذف دائمی حساب کاربری", disabled=not confirm_delete, type="primary"):
+        delete_account_dialog(supabase)

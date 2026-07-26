@@ -50,19 +50,15 @@ def render_create_prompt_page():
 
             # ذخیره در سشن
             st.session_state.last_generated_prompt = prompt_entity.generated_prompt
-
-            # ۳. ذخیره‌سازی خودکار در دیتابیس (اگر کاربر لاگین باشد)
-            if user:
-                try:
-                    repo = SupabasePromptRepository()
-                    repo.save(prompt_entity)
-                except Exception as db_err:
-                    pass
+            st.session_state.last_prompt_entity = prompt_entity
+            
+            # ریست کردن وضعیت ذخیره برای پرامپت جدید
+            st.session_state.prompt_saved = False
 
         except Exception as e:
             st.error(f"خطایی رخ داد: {str(e)}")
 
-    # ۴. نمایش پرامپت، دکمه کپی واقعی و پیام‌های وضعیت
+    # ۴. نمایش پرامپت، دکمه کپی واقعی و دکمه ذخیره دستی
     if "last_generated_prompt" in st.session_state:
         st.success("پرامپت شما با موفقیت ساخته شد!")
         st.subheader("📋 پرامپت تولید شده:")
@@ -75,7 +71,7 @@ def render_create_prompt_page():
 
         # دکمه کپی اختصاصی با قابلیت کپی واقعی و نمایش Alert
         html_code = f"""
-        <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: center; margin-bottom: 10px;">
             <button onclick="copyToClipboard()" style="
                 background-color: #2563eb;
                 color: white;
@@ -102,12 +98,28 @@ def render_create_prompt_page():
         </script>
         """
         
-        # نمایش دکمه کپی بالاتر از پیام‌های وضعیت
-        components.html(html_code, height=65)
+        # نمایش دکمه کپی
+        components.html(html_code, height=60)
 
-        # پیام وضعیت نهایی (ذخیره در تاریخچه یا درخواست لاگین)
-        user = st.session_state.get("user")
-        if user:
-            st.toast("پرامپت در تاریخچه شما ذخیره شد!", icon="✅")
-        else:
-            st.info("💡 برای ذخیره خودکار این پرامپت در تاریخچه، لطفاً وارد حساب کاربری خود شوید.")
+        # دکمه ذخیره دستی در تاریخچه با چک کردن تکراری نبودن
+        if st.button("ذخیره پرامپت در تاریخچه 💾", use_container_width=True):
+            user = st.session_state.get("user")
+            if not user:
+                st.error("⚠️ لطفاً ابتدا از منوی سمت راست وارد حساب کاربری خود شوید.")
+            elif st.session_state.get("prompt_saved", False):
+                st.warning("⚠️ این پرامپت قبلاً در تاریخچه ذخیره شده است!")
+            else:
+                try:
+                    if "last_prompt_entity" in st.session_state:
+                        repo = SupabasePromptRepository()
+                        repo.save(st.session_state.last_prompt_entity)
+                        st.session_state.prompt_saved = True  # علامت‌گذاری به عنوان ذخیره‌شده
+                        st.success("✅ پرامپت با موفقیت در تاریخچه شما ذخیره شد!")
+                    else:
+                        st.warning("پرامپتی برای ذخیره یافت نشد.")
+                except Exception as db_err:
+                    st.error(f"خطا در ذخیره‌سازی: {str(db_err)}")
+
+        # راهنمایی برای کاربران مهمان
+        if not st.session_state.get("user"):
+            st.info("💡 برای ذخیره این پرامپت در تاریخچه، لطفاً وارد حساب کاربری خود شوید.")
