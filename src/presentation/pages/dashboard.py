@@ -95,7 +95,8 @@ def render_dashboard_page():
                         response = supabase.auth.update_user(update_data)
                         st.success("✅ اطلاعات حساب کاربری با موفقیت به‌روزرسانی شد.")
                         if new_email:
-                            st.info("لطفاً ایمیل جدید خود را برای تایید بررسی کنید.")
+                            # نمایش پیام بررسی ایمیل به صورت Toast (شناور در گوشه صفحه)
+                            st.toast("لطفاً ایمیل جدید خود را برای تایید بررسی کنید.", icon="⚠️")
                     except Exception as update_err:
                         st.error(f"خطا در به‌روزرسانی: {str(update_err)}")
             elif not new_email and not new_password:
