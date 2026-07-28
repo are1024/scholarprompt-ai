@@ -1,5 +1,9 @@
 import streamlit as st
+from streamlit_cookies_controller import CookieController
 from src.infrastructure.database.supabase_client import SupabaseManager
+
+# راه‌اندازی کنترلر کوکی
+cookie_controller = CookieController()
 
 # پنجره پاپ‌آپ (Modal) برای ورود و ثبت‌نام
 @st.dialog("حساب کاربری")
@@ -19,9 +23,14 @@ def auth_modal():
                     response = supabase.auth.sign_in_with_password({"email": email, "password": password})
                     st.session_state.user = response.user
                     
-                    # ذخیره refresh_token در URL برای ماندگاری لاگین هنگام رفرش صفحه
+                    # ذخیره refresh_token هم در URL (برای رفرش آنی F5) و هم در کوکی (برای بستن مرورگر)
                     if response.session and response.session.refresh_token:
-                        st.query_params["rt"] = response.session.refresh_token
+                        token = response.session.refresh_token
+                        st.query_params["rt"] = token
+                        try:
+                            cookie_controller.set('refresh_token', token, max_age=30*24*60*60)
+                        except Exception:
+                            pass
                         
                     st.success("با موفقیت وارد شدید!")
                     st.rerun()
@@ -74,9 +83,13 @@ def render_sidebar():
                 supabase.auth.sign_out()
                 st.session_state.user = None
                 
-                # پاک کردن توکن از URL هنگام خروج از حساب کاربری
+                # پاک کردن هم از URL و هم از کوکی هنگام خروج از حساب کاربری
                 if "rt" in st.query_params:
                     del st.query_params["rt"]
+                try:
+                    cookie_controller.remove('refresh_token')
+                except Exception:
+                    pass
                     
                 st.rerun()
         else:
@@ -99,7 +112,7 @@ def render_sidebar():
                             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.622-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.119.098.152.228.165.32-.016.12-.003.393-.112.59z"/>
                         </svg>
                     </a>
-                    <!-- لینک گیتهاب (بدون حاشیه و پس‌زمینه، رنگ پویا مطابق با تم لایت/دارک) -->
+                    <!-- لینک گیتهاب -->
                     <a href="https://github.com" target="_blank" title="GitHub" style="color: inherit; text-decoration: none; display: flex; align-items: center;">
                         <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
