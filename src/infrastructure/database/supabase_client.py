@@ -7,11 +7,10 @@ import streamlit as st
 load_dotenv()
 
 class SupabaseManager:
-    _client: Client = None
-
-    @classmethod
-    def get_client(cls) -> Client:
-        if cls._client is None:
+    @staticmethod
+    def get_client() -> Client:
+        # بررسی اینکه آیا کلاینت برای این سشن (کاربر) قبلاً ساخته شده است یا خیر
+        if "supabase_client" not in st.session_state:
             url = None
             key = None
             
@@ -31,6 +30,7 @@ class SupabaseManager:
             if not url or not key:
                 raise ValueError("تنظیمات Supabase (URL و Key) در فایل .env یا Streamlit Secrets یافت نشدند!")
                 
-            cls._client = create_client(url, key)
+            # ساخت کلاینت اختصاصی و ذخیره آن در سشنِ همین کاربر
+            st.session_state["supabase_client"] = create_client(url, key)
             
-        return cls._client
+        return st.session_state["supabase_client"]

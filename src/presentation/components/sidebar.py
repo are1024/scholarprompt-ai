@@ -18,6 +18,11 @@ def auth_modal():
                 try:
                     response = supabase.auth.sign_in_with_password({"email": email, "password": password})
                     st.session_state.user = response.user
+                    
+                    # ذخیره refresh_token در URL برای ماندگاری لاگین هنگام رفرش صفحه
+                    if response.session and response.session.refresh_token:
+                        st.query_params["rt"] = response.session.refresh_token
+                        
                     st.success("با موفقیت وارد شدید!")
                     st.rerun()
                 except Exception as e:
@@ -68,6 +73,11 @@ def render_sidebar():
                 supabase = SupabaseManager.get_client()
                 supabase.auth.sign_out()
                 st.session_state.user = None
+                
+                # پاک کردن توکن از URL هنگام خروج از حساب کاربری
+                if "rt" in st.query_params:
+                    del st.query_params["rt"]
+                    
                 st.rerun()
         else:
             if st.button("🔐 ورود / ثبت‌نام", use_container_width=True):
