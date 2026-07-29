@@ -70,7 +70,7 @@ def render_dashboard_page():
         st.write(f"ایمیل فعلی: **{getattr(user, 'email', 'نامشخص')}**")
         
         new_email = st.text_input("ایمیل جدید (در صورت تمایل به تغییر)")
-        new_password = st.text_input("رمز عبور جدید", type="password")
+        new_password = st.text_input("رمز عبور جدید (حداقل ۶ کاراکتر)", type="password")
         confirm_password = st.text_input("تکرار رمز عبور جدید", type="password")
         
         submit_button = st.form_submit_button("بروزرسانی اطلاعات")
