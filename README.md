@@ -282,6 +282,8 @@ After running the command, Streamlit will provide a local URL where the applicat
 
 ScholarPrompt AI is deployed using **Streamlit Community Cloud**.
 
+**Live Application:** [https://scholarprompt-ai.streamlit.app/](https://scholarprompt-ai.streamlit.app/)
+
 The general deployment process is:
 
 1. Push the project to GitHub.
@@ -593,6 +595,8 @@ streamlit run src/app.py
 ## ☁️ استقرار پروژه
 
 پروژه **ScholarPrompt AI** با استفاده از **Streamlit Community Cloud** مستقر شده است.
+
+**لینک اجرای آنلاین پروژه:** [https://scholarprompt-ai.streamlit.app/](https://scholarprompt-ai.streamlit.app/)
 
 مراحل کلی:
 
