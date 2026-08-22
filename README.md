@@ -1,129 +1,660 @@
 # 🚀 ScholarPrompt AI
 
-> **AI-Powered Academic Prompt Engineering Platform**  
-> *Transform your research topics into precise, high-performance academic prompts for Large Language Models (LLMs).*
+> **AI-Powered Academic Prompt Engineering Platform**
+
+**ScholarPrompt AI** is an AI-powered web application designed to help researchers, university students, and academics generate structured, precise, and high-quality prompts for Large Language Models (LLMs).
+
+The platform transforms academic requirements into optimized prompts based on research field, academic level, document type, methodology, language, and additional requirements.
 
 ---
 
-### 🌐 Language Selection / انتخاب زبان
-You can read this documentation in:
-* **[English Version](#-english-documentation)**
-* **[نسخه فارسی (Farsi Documentation)](#-مستندات-فارسی)**
+## 🌐 Language | زبان
+
+* 🇬🇧 **English Documentation**
+* 🇮🇷 **[مستندات فارسی](#-مستندات-فارسی)**
 
 ---
 
-<a name="-english-documentation"></a>
+## 🔗 Live Demo
+
+### 🎓 Try ScholarPrompt AI
+
+**[Open the Web Application](https://scholarprompt-ai.streamlit.app/)**
+
+The application is deployed using **Streamlit Community Cloud**.
+
+---
+
 # 🇬🇧 English Documentation
 
-[![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https:/scholarprompt-ai.streamlit.app)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+## 📖 Overview
 
-## 📖 Table of Contents
-- [About the Project](#-about-the-project)
-- [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
-- [Database Setup (Supabase)](#-database-setup-supabase)
-- [Installation & Local Run](#-installation--local-run)
-- [Deployment](#-deployment)
+Creating effective prompts for Large Language Models requires more than simply asking a question. Academic tasks often require specific context, methodology, academic level, document type, language, and formatting requirements.
+
+**ScholarPrompt AI** addresses this challenge by collecting structured academic information from the user and transforming it into a carefully designed academic prompt.
+
+The generated prompt can then be used with Large Language Models such as ChatGPT, Claude, Gemini, and other compatible AI systems.
 
 ---
 
-## 🎯 About the Project
-**ScholarPrompt AI** is an advanced, specialized web application designed for researchers, graduate students, and academics. Writing effective prompts for Large Language Models (LLMs) requires deep understanding of prompt engineering. ScholarPrompt AI bridges this gap by automatically structuring user inputs into optimized, rigorous academic prompts.
+## 🎯 Project Goals
+
+The main goals of ScholarPrompt AI are to:
+
+* Simplify academic prompt engineering.
+* Help users create structured and precise prompts.
+* Reduce the difficulty of writing effective prompts for academic tasks.
+* Provide prompts tailored to different academic levels and research methodologies.
+* Allow authenticated users to save and manage their generated prompts.
+* Provide a simple and accessible web-based interface.
+
+---
 
 ## ✨ Key Features
-- **Academic Parameter Structuring:** Tailors prompts based on Subject, Academic Level, Document Type, and Research Methodology.
-- **Dual Access Control:** Guest users can generate prompts freely, while authenticated users can securely save and manage their prompt history.
-- **Secure Cloud Database:** Integrated with Supabase for robust authentication and data persistence.
 
-## 💻 Tech Stack
-- **Frontend & Backend:** Python, Streamlit
-- **Database & Auth:** Supabase (PostgreSQL)
-- **Deployment:** Streamlit Cloud
+### 🎓 Academic Parameter Structuring
 
-## 🛠️ Database Setup (Supabase)
-Run the following SQL query in your Supabase **SQL Editor**:
-```sql
-create table public.prompts (
-id uuid default gen_random_uuid() primary key,
-user_id uuid references auth.users(id) on delete cascade not null,
-title text not null,
-field text not null,
-academic_level text not null,
-document_type text not null,
-methodology text not null,
-generated_prompt text not null,
-created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-alter table public.prompts enable row level security;
-create policy "Users can manage their own prompts" on public.prompts for all using (auth.uid() = user_id);
+The system generates prompts based on academic parameters such as:
 
-## ⚙️ Installation & Local Run
-bash
+* Research topic
+* Academic field
+* Academic degree
+* Document type
+* Research methodology
+* Language
+* Target AI model
+* Additional requirements
+
+### 🤖 AI-Powered Prompt Generation
+
+ScholarPrompt AI transforms structured user requirements into optimized academic prompts suitable for Large Language Models.
+
+### 👤 Guest Access
+
+Users can generate academic prompts without creating an account.
+
+### 🔐 Authentication & User Data
+
+Authenticated users can securely store and manage their generated prompts.
+
+### 📚 Prompt History
+
+Registered users can:
+
+* View previously generated prompts
+* Retrieve their prompt history
+* Delete unwanted prompts
+
+### ☁️ Cloud Database
+
+The application uses **Supabase PostgreSQL** for persistent data storage and Supabase Authentication for user management.
+
+### 🖥️ Web-Based Interface
+
+The user interface is implemented with **Streamlit**, providing a lightweight and interactive web experience.
+
+---
+
+## 🧠 How It Works
+
+The general workflow of the application is:
+
+```text
+Academic Requirements
+        ↓
+User Input
+        ↓
+Data Validation
+        ↓
+Prompt Generation Engine
+        ↓
+Optimized Academic Prompt
+        ↓
+Display / Save
+        ↓
+User Prompt History
+```
+
+The system separates presentation, application logic, domain models, and infrastructure concerns according to Clean Architecture principles.
+
+---
+
+## 🏗️ Architecture
+
+ScholarPrompt AI follows a **Clean Architecture** approach.
+
+The architecture separates the system into different responsibilities:
+
+### Presentation Layer
+
+Responsible for the Streamlit user interface and interaction with users.
+
+### Application Layer
+
+Contains application services, DTOs, and the main application-level operations.
+
+### Domain Layer
+
+Contains the core business entities and repository abstractions.
+
+### Infrastructure Layer
+
+Responsible for external systems and implementations such as Supabase database connectivity and repository implementations.
+
+This separation improves:
+
+* Maintainability
+* Scalability
+* Testability
+* Separation of concerns
+* Future extensibility
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology                    | Purpose                                    |
+| ----------------------------- | ------------------------------------------ |
+| **Python**                    | Main programming language                  |
+| **Streamlit**                 | Web interface and application framework    |
+| **Supabase**                  | Database and authentication                |
+| **PostgreSQL**                | Relational database                        |
+| **Git**                       | Version control                            |
+| **GitHub**                    | Source code management and project hosting |
+| **Streamlit Community Cloud** | Application deployment                     |
+| **Pydantic**                  | Data validation                            |
+| **python-dotenv**             | Local environment configuration            |
+
+---
+
+## 🗄️ Database
+
+ScholarPrompt AI uses **Supabase PostgreSQL** as its database.
+
+The database stores information required for authenticated users and their generated prompts.
+
+Database-related SQL scripts are maintained separately from this README.
+
+### Database Schema
+
+The SQL schema is available here:
+
+**[📄 View Supabase Database Schema](supabase/schema.sql)**
+
+### 🔐 Row Level Security
+
+The application uses **Row Level Security (RLS)** to ensure that authenticated users can access only the records associated with their own accounts.
+
+---
+
+## ⚙️ Installation & Local Development
+
+### Prerequisites
+
+Before running the project locally, make sure the following are installed:
+
+* Python 3.10 or newer
+* Git
+* A Supabase project
+
+---
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/are1024/ScholarPrompt-AI.git
 cd ScholarPrompt-AI
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+
+---
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+---
+
+### 3. Activate the Virtual Environment
+
+#### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+---
+
+### 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-streamlit run app.py
-
----
----
-
-<a name="-مستندات-فارسی"></a>
-# 🇮🇷 مستندات فارسی (Farsi Documentation)
-
-> **سامانه هوش مصنوعی مهندسی پرامپت آکادمیک**  
-> *تبدیل موضوعات پژوهشی به پرامپت‌های دقیق و بهینه دانشگاهی برای مدل‌های زبانی بزرگ (LLMs).*
-
-## 📖 فهرست مطالب
-- [درباره پروژه](#-درباره-پروژه)
-- [ویژگی‌های کلیدی](#-ویژگی‌های-کلیدی)
-- [تکنولوژی‌های استفاده شده](#-تکنولوژی‌های-استفاده-شده)
-- [راه‌اندازی پایگاه داده (Supabase)](#-راه‌اندازی-پایگاه-داده-supabase)
-- [نصب و اجرای محلی](#-نصب-و-اجرای-محلی)
-- [استقرار (Deployment)](#-استقرار-در-بستر-ابری)
+```
 
 ---
 
-## 🎯 درباره پروژه
-سامانه **ScholarPrompt AI** یک وب‌اپلیکیشن پیشرفته است که به پژوهشگران، دانشجویان تحصیلات تکمیلی و اساتید کمک می‌کند تا پرامپت‌های استاندارد، علمی و ساختاریافته برای مدل‌های زبانی بزرگ (مانند GPT) تولید کنند. این سامانه با دریافت پارامترهای دقیق آکادمیک، بهترین نتیجه را برای نگارش پروپوزال، پایان‌نامه و مقالات فراهم می‌سازد.
+### 5. Configure Environment Variables
+
+Create a `.env` file in the project root.
+
+Use the provided example as a reference:
+
+```text
+.env.example
+```
+
+Add the required Supabase configuration to your local `.env` file.
+
+> **Important:** Never commit `.env` or any file containing API keys, passwords, or other sensitive credentials to GitHub.
+
+---
+
+### 6. Configure the Database
+
+Open the SQL file:
+
+**[supabase/schema.sql](supabase/schema.sql)**
+
+Copy its contents into the **SQL Editor** of your Supabase project and execute the script.
+
+---
+
+### 7. Run the Application
+
+Start the Streamlit application with:
+
+```bash
+streamlit run src/app.py
+```
+
+After running the command, Streamlit will provide a local URL where the application can be accessed.
+
+---
+
+## ☁️ Deployment
+
+ScholarPrompt AI is deployed using **Streamlit Community Cloud**.
+
+The general deployment process is:
+
+1. Push the project to GitHub.
+2. Connect the GitHub repository to Streamlit Community Cloud.
+3. Select `src/app.py` as the application entry point.
+4. Configure the required secrets.
+5. Deploy the application.
+
+The required Python dependencies are defined in:
+
+```text
+requirements.txt
+```
+
+Sensitive credentials should be configured through Streamlit's **Secrets** management rather than committed to the repository.
+
+For more information, see the official Streamlit documentation:
+
+**[Streamlit Community Cloud Documentation](https://docs.streamlit.io/deploy/streamlit-community-cloud)**
+
+---
+
+## 🔒 Security
+
+Security-sensitive information is intentionally excluded from the repository.
+
+The following files or information should **not** be committed:
+
+```text
+.env
+API Keys
+Passwords
+Database Credentials
+Private Tokens
+```
+
+The repository includes `.env.example` as a safe template for configuring the required environment variables.
+
+---
+
+## 📂 Database Configuration
+
+Database configuration is intentionally separated from the main application documentation.
+
+```text
+supabase/schema.sql
+```
+
+This keeps the README concise while allowing developers to access the complete database setup script directly from the repository.
+
+---
+
+## 🧪 Development
+
+The project is designed with separation of concerns in mind, allowing different parts of the application to be modified independently.
+
+Future development can include:
+
+* Additional academic document types
+* More research methodologies
+* Additional AI model integrations
+* Advanced prompt templates
+* Improved analytics
+* Extended user management
+* Additional language support
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+If you would like to contribute:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes.
+4. Commit your changes.
+5. Push the branch.
+6. Open a Pull Request.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+See the [LICENSE](LICENSE) file for details.
+
+---
+
+# 🇮🇷 مستندات فارسی
+
+## 🎯 معرفی پروژه
+
+**ScholarPrompt AI** یک وب‌اپلیکیشن مبتنی بر هوش مصنوعی است که با هدف کمک به پژوهشگران، دانشجویان و دانشگاهیان برای تولید **پرامپت‌های دقیق، ساختاریافته و استاندارد دانشگاهی** طراحی شده است.
+
+این سامانه اطلاعات آکادمیک مورد نیاز کاربر را دریافت کرده و بر اساس پارامترهایی مانند رشته تحصیلی، مقطع، نوع سند، روش تحقیق، زبان و سایر الزامات، یک پرامپت بهینه برای استفاده در مدل‌های زبانی بزرگ (LLMs) تولید می‌کند.
+
+پرامپت تولیدشده می‌تواند در مدل‌هایی مانند ChatGPT، Claude، Gemini و سایر مدل‌های زبانی مورد استفاده قرار گیرد.
+
+---
+
+## 🎯 اهداف پروژه
+
+اهداف اصلی ScholarPrompt AI عبارت‌اند از:
+
+* ساده‌سازی فرآیند مهندسی پرامپت برای کارهای دانشگاهی
+* کمک به تولید پرامپت‌های دقیق و ساختاریافته
+* کاهش دشواری طراحی پرامپت برای فعالیت‌های پژوهشی
+* تولید پرامپت متناسب با مقطع و حوزه دانشگاهی
+* پشتیبانی از روش‌های مختلف تحقیق
+* امکان ذخیره و مدیریت تاریخچه پرامپت‌ها برای کاربران ثبت‌نام‌شده
+* ارائه یک رابط کاربری ساده و قابل دسترس
+
+---
 
 ## ✨ ویژگی‌های کلیدی
-- **ساختاردهی پارامترهای آکادمیک:** تنظیم پرامپت بر اساس عنوان، رشته تحصیلی، مقطع (کارشناسی، ارشد، دکتری)، نوع سند و روش تحقیق (کمی، کیفی، آمیخته، مروری).
-- **سطوح دسترسی دوگانه:** امکان تولید پرامپت برای کاربران مهمان (بدون نیاز به ثبت‌نام) و قابلیت ذخیره، مدیریت و بازیابی تاریخچه پرامپت‌ها برای کاربران ثبت‌نام‌شده.
-- **پایگاه داده ابری امن:** اتصال کامل به `Supabase` جهت مدیریت احراز هویت و ذخیره‌سازی داده‌ها.
 
-## 💻 تکنولوژی‌های استفاده شده
-- **فرانت‌اند و بک‌اند:** پایتون (Python)، استریم‌لیت (Streamlit)
-- **پایگاه داده و احراز هویت:** سوپابیس (Supabase / PostgreSQL)
-- **کنترل نسخه و استقرار:** گیت‌هاب (GitHub)، استریم‌لیت کلود (Streamlit Cloud)
+### 🎓 ساختاردهی پارامترهای آکادمیک
 
-## 🛠️ راه‌اندازی پایگاه داده (Supabase)
-برای ساخت جداول مورد نیاز، کد SQL زیر را در بخش **SQL Editor** در پنل Supabase اجرا کنید:
-*(کد SQL در بخش انگلیسی بالا قابل کپی است)*
+تولید پرامپت بر اساس پارامترهایی مانند:
 
-## ⚙️ نصب و اجرای محلی
-برای اجرای پروژه روی سیستم شخصی خود، مراحل زیر را در ترمینال دنبال کنید:
-bash
-# ۱. کلون کردن مخزن
-git clone https://github.com/are1024/ScholarPrompt-AI.git
-cd ScholarPrompt-AI
+* موضوع پژوهش
+* رشته تحصیلی
+* مقطع تحصیلی
+* نوع سند
+* روش تحقیق
+* زبان
+* مدل هوش مصنوعی هدف
+* توضیحات و الزامات اضافی
 
-# ۲. ایجاد محیط مجازی
-python -m venv venv
-source venv/bin/activate  # در ویندوز: venv\Scripts\activate
+### 🤖 تولید پرامپت با کمک هوش مصنوعی
 
-# ۳. نصب کتابخانه‌ها
-pip install -r requirements.txt
+سامانه اطلاعات ساختاریافته کاربر را به یک پرامپت دقیق و بهینه برای مدل‌های زبانی بزرگ تبدیل می‌کند.
 
-# ۴. اجرای برنامه
-streamlit run app.py
+### 👤 دسترسی کاربران مهمان
 
-## ☁️ استقرار در بستر ابری
-این پروژه روی پلتفرم **Streamlit Cloud** مستقر شده است. کافی است ریپازیتوری خود را به استریم‌لیت متصل کرده، متغیرهای محیطی پایگاه داده را در بخش Secrets وارد کنید و اپلیکیشن را به صورت **Public** دیپلوی نمایید.
+کاربران می‌توانند بدون ثبت‌نام، پرامپت تولید کنند.
+
+### 🔐 احراز هویت کاربران
+
+کاربران ثبت‌نام‌شده می‌توانند پرامپت‌های خود را به صورت امن ذخیره و مدیریت کنند.
+
+### 📚 تاریخچه پرامپت‌ها
+
+کاربران ثبت‌نام‌شده می‌توانند:
+
+* پرامپت‌های قبلی خود را مشاهده کنند
+* تاریخچه پرامپت‌ها را بازیابی کنند
+* پرامپت‌های موردنظر را حذف کنند
+
+### ☁️ پایگاه داده ابری
+
+برای ذخیره اطلاعات از **Supabase PostgreSQL** و برای مدیریت کاربران از **Supabase Authentication** استفاده شده است.
 
 ---
-<p align="center">Developed with ❤️ for Academic Excellence.</p>
+
+## 🧠 نحوه عملکرد سامانه
+
+روند کلی عملکرد سیستم به شکل زیر است:
+
+```text
+نیاز پژوهشی
+    ↓
+ورودی کاربر
+    ↓
+اعتبارسنجی اطلاعات
+    ↓
+موتور تولید پرامپت
+    ↓
+پرامپت دانشگاهی بهینه‌شده
+    ↓
+نمایش / ذخیره‌سازی
+    ↓
+تاریخچه کاربر
+```
+
+---
+
+## 🏗️ معماری سیستم
+
+پروژه با رویکرد **Clean Architecture** طراحی شده است.
+
+لایه‌های اصلی سیستم عبارت‌اند از:
+
+* **Presentation:** رابط کاربری و تعامل با کاربر
+* **Application:** سرویس‌ها و منطق سطح کاربرد
+* **Domain:** موجودیت‌ها و انتزاعات اصلی سیستم
+* **Infrastructure:** ارتباط با سرویس‌های خارجی و پایگاه داده
+
+این تفکیک باعث بهبود:
+
+* نگهداری کد
+* توسعه‌پذیری
+* تست‌پذیری
+* جداسازی مسئولیت‌ها
+* امکان توسعه قابلیت‌های آینده
+
+می‌شود.
+
+---
+
+## 💻 فناوری‌های استفاده‌شده
+
+| فناوری                        | کاربرد                     |
+| ----------------------------- | -------------------------- |
+| **Python**                    | زبان برنامه‌نویسی اصلی     |
+| **Streamlit**                 | رابط کاربری و Framework وب |
+| **Supabase**                  | پایگاه داده و احراز هویت   |
+| **PostgreSQL**                | پایگاه داده رابطه‌ای       |
+| **Git**                       | کنترل نسخه                 |
+| **GitHub**                    | مدیریت و میزبانی کد        |
+| **Streamlit Community Cloud** | استقرار برنامه             |
+| **Pydantic**                  | اعتبارسنجی داده‌ها         |
+| **python-dotenv**             | مدیریت تنظیمات محیط محلی   |
+
+---
+
+## 🗄️ پایگاه داده
+
+پایگاه داده پروژه با استفاده از **Supabase PostgreSQL** پیاده‌سازی شده است.
+
+کد SQL مربوط به ایجاد و تنظیم پایگاه داده در فایل زیر قرار دارد:
+
+**[📄 مشاهده فایل SQL پایگاه داده](supabase/schema.sql)**
+
+برای راه‌اندازی پایگاه داده کافی است محتوای این فایل را در بخش **SQL Editor** پروژه Supabase اجرا کنید.
+
+### 🔐 امنیت پایگاه داده
+
+برای جلوگیری از دسترسی کاربران به اطلاعات سایر کاربران، از قابلیت **Row Level Security (RLS)** استفاده شده است.
+
+---
+
+## ⚙️ نصب و اجرای محلی
+
+### پیش‌نیازها
+
+برای اجرای پروژه به موارد زیر نیاز دارید:
+
+* Python 3.10 یا بالاتر
+* Git
+* یک پروژه در Supabase
+
+### ۱. دریافت پروژه
+
+```bash
+git clone https://github.com/are1024/ScholarPrompt-AI.git
+cd ScholarPrompt-AI
+```
+
+### ۲. ایجاد محیط مجازی
+
+```bash
+python -m venv .venv
+```
+
+### ۳. فعال‌سازی محیط مجازی
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**Linux / macOS:**
+
+```bash
+source .venv/bin/activate
+```
+
+### ۴. نصب وابستگی‌ها
+
+```bash
+pip install -r requirements.txt
+```
+
+### ۵. تنظیم متغیرهای محیطی
+
+یک فایل `.env` در ریشه پروژه ایجاد کنید.
+
+برای مشاهده نام متغیرهای موردنیاز می‌توانید از فایل زیر استفاده کنید:
+
+```text
+.env.example
+```
+
+> **توجه:** فایل `.env` و اطلاعات حساس مانند API Key، رمز عبور و اطلاعات اتصال پایگاه داده نباید در GitHub قرار گیرند.
+
+### ۶. راه‌اندازی پایگاه داده
+
+فایل زیر را باز کنید:
+
+**[supabase/schema.sql](supabase/schema.sql)**
+
+سپس محتوای آن را در **SQL Editor** پروژه Supabase اجرا کنید.
+
+### ۷. اجرای برنامه
+
+```bash
+streamlit run src/app.py
+```
+
+پس از اجرای دستور، Streamlit یک آدرس محلی برای دسترسی به برنامه نمایش خواهد داد.
+
+---
+
+## ☁️ استقرار پروژه
+
+پروژه **ScholarPrompt AI** با استفاده از **Streamlit Community Cloud** مستقر شده است.
+
+مراحل کلی:
+
+1. Push کردن پروژه در GitHub
+2. اتصال Repository به Streamlit Community Cloud
+3. انتخاب فایل `src/app.py` به عنوان Entry Point
+4. تنظیم Secrets موردنیاز
+5. Deploy کردن برنامه
+
+وابستگی‌های پروژه در فایل زیر قرار دارند:
+
+```text
+requirements.txt
+```
+
+اطلاعات حساس باید از طریق بخش **Secrets** تنظیم شوند و نباید در Repository قرار بگیرند.
+
+---
+
+## 🔒 امنیت
+
+اطلاعات حساس پروژه عمداً در Repository قرار داده نشده‌اند.
+
+موارد زیر نباید در GitHub قرار گیرند:
+
+```text
+.env
+API Keys
+Passwords
+Database Credentials
+Private Tokens
+```
+
+فایل `.env.example` تنها برای نمایش ساختار متغیرهای محیطی موردنیاز پروژه استفاده می‌شود.
+
+---
+
+## 🤝 مشارکت
+
+پیشنهادها، گزارش مشکلات و مشارکت در توسعه پروژه استقبال می‌شود.
+
+برای مشارکت:
+
+1. Repository را Fork کنید.
+2. یک Branch جدید ایجاد کنید.
+3. تغییرات موردنظر را اعمال کنید.
+4. تغییرات را Commit کنید.
+5. Branch را Push کنید.
+6. یک Pull Request ایجاد کنید.
+
+---
+
+## 📜 مجوز
+
+این پروژه تحت **MIT License** منتشر شده است.
+
+برای اطلاعات بیشتر فایل [LICENSE](LICENSE) را مشاهده کنید.
+
+---
+
+<p align="center">
+
+**Developed with ❤️**
+
+</p>
