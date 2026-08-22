@@ -658,7 +658,8 @@ Private Tokens
 ---
 
 <p align="center">
-
-**Developed with ❤️**
-
+  <strong>Developed with ❤️ for Academic Excellence</strong>
 </p>
+
+
+---
