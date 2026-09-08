@@ -5,7 +5,7 @@ class PromptEngineService:
     """موتور هوشمند تولید پرامپت‌های آکادمیک و دانشگاهی"""
 
     @staticmethod
-    def generate_prompt(dto: PromptCreateDTO, user_id: str) -> AcademicPrompt:
+    def generate_prompt(dto: PromptCreateDTO) -> AcademicPrompt:
         
         # ۱. الگوی استاندارد تعریف نقش و چارچوب اولیه
         system_role = (
@@ -48,7 +48,6 @@ Please proceed with generating the content accordingly.
         # ۴. تبدیل خروجی به Entity دامنه
         return AcademicPrompt(
             id=None,
-            user_id=user_id,
             title=dto.title,
             academic_field=dto.academic_field,
             degree=dto.degree,

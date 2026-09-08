@@ -1,6 +1,15 @@
 import time
 import streamlit as st
 
+
+@st.dialog("پیام سیستم")
+def error_sign():
+    st.error("با عرض پوزش ورود و ثبت نام در سایت لغو شده است. ❌")
+    st.info(" در حال حاضر امکان ورود یا ثبت نام در سامانه امکان‌پذیر نمی‌باشد.")
+    if st.button("OK", use_container_width=True):
+        st.rerun()
+
+
 def render_sidebar():
     with st.sidebar:
 
@@ -27,7 +36,7 @@ def render_sidebar():
 
         # ورود و ثبت‌نام غیرفعال شده است
         if st.button("🔐 ورود / ثبت‌نام", use_container_width=True):
-            st.info("ℹ️ ورود و ثبت‌نام در سایت لغو شده است.")
+            error_sign()
 
         # بخش شبکه‌های اجتماعی
         st.markdown("""

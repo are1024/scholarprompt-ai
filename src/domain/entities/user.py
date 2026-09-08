@@ -6,7 +6,4 @@ from typing import Optional
 class UserProfile:
     id: str
     email: str
-    full_name: str
-    degree: Optional[str] = None      # مقطع تحصیلی
-    university: Optional[str] = None  # دانشگاه
     created_at: Optional[datetime] = None

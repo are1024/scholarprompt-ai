@@ -5,7 +5,6 @@ from typing import Optional
 @dataclass
 class AcademicPrompt:
     id: Optional[str]
-    user_id: str
     title: str
     academic_field: str       # رشته تحصیلی
     degree: str               # مقطع
