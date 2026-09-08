@@ -23,6 +23,8 @@ The platform transforms academic requirements into optimized prompts based on re
 
 The application is deployed using **Streamlit Community Cloud**.
 
+> ⚠️ **Important Notice:** We apologize for the inconvenience. At this time, user login, registration, and Prompt storage features are unavailable in the system.
+
 ---
 
 # 🇬🇧 English Documentation
@@ -283,6 +285,8 @@ After running the command, Streamlit will provide a local URL where the applicat
 ScholarPrompt AI is deployed using **Streamlit Community Cloud**.
 
 **Live Application:** [https://scholarprompt-ai.streamlit.app/](https://scholarprompt-ai.streamlit.app/)
+
+> ⚠️ **Important Notice:** We apologize for the inconvenience. At this time, user login, registration, and Prompt storage features are unavailable in the system.
 
 The general deployment process is:
 
@@ -597,6 +601,8 @@ streamlit run src/app.py
 پروژه **ScholarPrompt AI** با استفاده از **Streamlit Community Cloud** مستقر شده است.
 
 **لینک اجرای آنلاین پروژه:** [https://scholarprompt-ai.streamlit.app/](https://scholarprompt-ai.streamlit.app/)
+
+> ⚠️ **اطلاعیه مهم:** از بابت این موضوع پوزش می‌طلبیم. در حال حاضر قابلیت‌های ورود، ثبت‌نام کاربران و ذخیره‌سازی پرامپت در سامانه در دسترس نیستند.
 
 مراحل کلی:
 
